@@ -73,7 +73,7 @@ async def catch_all(request: Request, full_path: str, response: Response):
     request_made: RequestMade = RequestMade(
         headers=orjson.dumps(dict(request.headers)).decode("utf-8"),
         body=(await request.body()).decode("utf-8"),
-        url=full_path,
+        url=f"/{full_path}",
         query_params=str(request.query_params),
         type=request.method,
     )

@@ -8,7 +8,7 @@
         <section>
         <ul>
             {% for request in requests %}
-                <li><a href="/requests/{{ request.uuid }}"> {{ request.type }} /{{ request.url }}{% if request.query_params %}?{{ request.query_params }}{% endif %} </a></li>
+                <li><a href="/requests/{{ request.uuid }}"> {{ request.type }} {{ request.url }}{% if request.query_params %}?{{ request.query_params }}{% endif %} </a></li>
             {% endfor %}
         </ul>
         </section>

@@ -7,7 +7,7 @@
     <div class="content">
         <section>
         <b>Type:</b> {{ request.type }}<br>
-        <b>URL:</b> {% if request.url %}{{ request.url }}{% else %}/{% endif %}{% if request.query_params %}?{{ request.query_params }}{% endif %}<br>
+        <b>URL:</b> {{ request.url }}{% if request.query_params %}?{{ request.query_params }}{% endif %}<br>
         <b>Request made at:</b><br>
         <ul>
             <li>{{ made_at_time }}</li>
