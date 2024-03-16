@@ -17,7 +17,6 @@ if os.environ.get("PROD", None) is not None:
             "host": os.environ["POSTGRES_HOST"],
             "port": int(os.environ["POSTGRES_PORT"]),
         },
-        extensions=tuple(),
     )
 else:
     DB = SQLiteEngine()
