@@ -4,6 +4,7 @@ import uuid
 import humanize
 import jinja2
 import orjson
+from dotenv import load_dotenv
 from fastapi import FastAPI
 from piccolo_admin.endpoints import create_admin
 from piccolo.engine import engine_finder
@@ -15,6 +16,9 @@ from starlette.staticfiles import StaticFiles
 from home.piccolo_app import APP_CONFIG
 from home.tables import RequestMade
 
+load_dotenv()
+
+hide_query_params = os.environ.get("HIDE_QUERY_PARAMS", None) is not None
 headers = {
     "x-frame-options": "SAMEORIGIN",
     "x-xss-protection": "1; mode=block",
@@ -83,7 +87,11 @@ async def catch_all(request: Request, full_path: str, response: Response):
         await RequestMade.objects().order_by(RequestMade.id, ascending=False).limit(25)
     )
 
-    content = template.render(title="Incoming requests", requests=requests)
+    content = template.render(
+        title="Incoming requests",
+        requests=requests,
+        show_query_params=not hide_query_params,
+    )
     return HTMLResponse(
         content,
         headers=headers,

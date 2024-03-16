@@ -33,6 +33,7 @@ services:
       POSTGRES_USER: XXX
       POSTGRES_PASSWORD: XXX
       POSTGRES_PORT: 2301
+      PROD: 1
 
 #networks:
 #  default:
