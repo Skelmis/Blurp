@@ -55,7 +55,10 @@ async def view_request(request_uuid: uuid.UUID):
     return HTMLResponse(content)
 
 
-@app.api_route("/{full_path:path}")
+@app.api_route(
+    "/{full_path:path}",
+    methods=["GET", "POST", "HEAD", "DELETE", "OPTIONS", "TRACE", "PUT", "PATCH"],
+)
 async def catch_all(request: Request, full_path: str):
     template = ENVIRONMENT.get_template("home.html.jinja")
     request_made: RequestMade = RequestMade(
