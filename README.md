@@ -1,21 +1,10 @@
-# piccolo_project
+Blurp
+---
 
-## Setup
+*SSRF all the things*
 
-### Install requirements
+A simple site that diligently logs all incoming traffic for review. Useful for tracking SSRF callouts, etc.
 
-```bash
-pip install -r requirements.txt
-```
-
-### Getting started guide
-
-```bash
-python main.py
-```
-
-### Running tests
-
-```bash
-piccolo tester run
-```
+Future features:
+- Hiding query params toggle
+- Requiring auth to review requests
