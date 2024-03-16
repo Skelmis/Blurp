@@ -1,0 +1,17 @@
+{% extends "base.html.jinja" %}
+
+{% block content %}
+    <div class="hero">
+        <h1>{{ title }}</h1>
+    </div>
+    <div class="content">
+        <section>
+        <ul>
+            {% for request in requests %}
+                <li><a href="/requests/{{ request.uuid }}"> {{ request.type }} /{{ request.url }}{% if request.query_params %}?{{ request.query_params }}{% endif %} </a></li>
+            {% endfor %}
+        </ul>
+        </section>
+        <i>All requests sent to this site are logged here.</i>
+    </div>
+{% endblock content %}

@@ -1,0 +1,30 @@
+{% extends "base.html.jinja" %}
+
+{% block content %}
+    <div class="hero">
+        <h1>{{ title }}</h1>
+    </div>
+    <div class="content">
+        <section>
+        <b>Type:</b> {{ request.type }}<br>
+        <b>URL:</b> {% if request.url %}{{ request.url }}{% else %}/{% endif %}{% if request.query_params %}?{{ request.query_params }}{% endif %}<br>
+        <b>Request made at:</b><br>
+        <ul>
+            <li>{{ made_at_time }}</li>
+            <li>{{ made_at }}</li>
+            <li>{{ request.made_at }}</li>
+        </ul>
+        <b>Headers:</b>
+        <ul>
+            {% for k, v in headers.items() %}
+            	<li><b>{{ k }}</b>: {{ v }}</li>
+            {% endfor %}
+
+        </ul><br>
+        <b>Body:</b><br>{{ request.body }}
+        </section>
+        <section>
+            <a href="/">Go home</a>
+        </section>
+    </div>
+{% endblock content %}

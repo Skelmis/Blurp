@@ -1,0 +1,1 @@
+piccolo migrations new home --auto
