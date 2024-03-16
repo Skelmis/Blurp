@@ -16,7 +16,7 @@ services:
     volumes:
       - .db:/var/lib/postgresql/data
   data_web:
-    image: ghcr.io/skelmis/data.skelmis.co.nz:master
+    image: ghcr.io/skelmis/blurp:master
     container_name: "web_blurp.skelmis.co.nz"
     restart: always
     ports:
@@ -27,12 +27,12 @@ services:
     mem_limit: 1g
     mem_reservation: 256m
     environment:
-      SERVING_DOMAIN: "data.skelmis.co.nz"
-      POSTGRES_HOST: db.data.skelmis.co.nz
-      POSTGRES_DB: its_a_db_woo
-      POSTGRES_USER: its_a_db_woo_user
-      POSTGRES_PASSWORD: its_a_db_woo_password_for_db_user
-      POSTGRES_PORT: 2201
+      SERVING_DOMAIN: "blurp.skelmis.co.nz"
+      POSTGRES_HOST: db.blurp.skelmis.co.nz
+      POSTGRES_DB: XXX
+      POSTGRES_USER: XXX
+      POSTGRES_PASSWORD: XXX
+      POSTGRES_PORT: 2301
 
 #networks:
 #  default:
