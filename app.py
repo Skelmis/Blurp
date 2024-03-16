@@ -1,13 +1,17 @@
 import os
+import secrets
 import uuid
+from typing import Annotated
 
 import humanize
 import jinja2
 import orjson
 from dotenv import load_dotenv
-from fastapi import FastAPI
+from fastapi import FastAPI, Depends, HTTPException
+from fastapi.security import HTTPBasic, HTTPBasicCredentials
 from piccolo_admin.endpoints import create_admin
 from piccolo.engine import engine_finder
+from starlette import status
 from starlette.requests import Request
 from starlette.responses import HTMLResponse, Response
 from starlette.routing import Mount
@@ -49,10 +53,45 @@ ENVIRONMENT = jinja2.Environment(
     ),
     autoescape=True,
 )
+security = HTTPBasic()
+
+
+USERNAME = os.environ.get("REQUEST_USERNAME")
+PASSWORD = os.environ.get("REQUEST_PASSWORD")
+REQUIRES_AUTH = USERNAME is not None and PASSWORD is not None
+
+
+def get_current_username(
+    credentials: Annotated[HTTPBasicCredentials, Depends(security)]
+):
+    if not REQUIRES_AUTH:
+        return "Not required"
+
+    current_username_bytes = credentials.username.encode("utf8")
+    correct_username_bytes = USERNAME.encode("utf8")
+    is_correct_username = secrets.compare_digest(
+        current_username_bytes, correct_username_bytes
+    )
+    current_password_bytes = credentials.password.encode("utf8")
+    correct_password_bytes = PASSWORD.encode("utf8")
+    is_correct_password = secrets.compare_digest(
+        current_password_bytes, correct_password_bytes
+    )
+    if not (is_correct_username and is_correct_password):
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Incorrect username or password",
+            headers={"WWW-Authenticate": "Basic"},
+        )
+
+    return credentials.username
 
 
 @app.get("/requests/{request_uuid}")
-async def view_request(request_uuid: uuid.UUID):
+async def view_request(
+    request_uuid: uuid.UUID,
+    _: Annotated[str, Depends(get_current_username)],
+):
     request_made: RequestMade = await RequestMade.objects().get(
         RequestMade.uuid == request_uuid
     )
