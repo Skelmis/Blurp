@@ -1,9 +1,13 @@
 Blurp
 ---
 
-*SSRF all the things*
+**SSRF all the things** 
 
-A simple site that diligently logs all incoming traffic for review. Useful for tracking SSRF callouts, etc.
+<img src="images/logo.jpeg" alt="drawing" width="250"/>
+
+---
+
+Blurp is a simple site that diligently logs all incoming traffic for review. Useful for tracking SSRF callouts, etc.
 
 This is currently live at: https://blurp.skelmis.co.nz
 
