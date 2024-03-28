@@ -109,7 +109,17 @@ async def view_request(
 
 @app.api_route(
     "/{full_path:path}",
-    methods=["GET", "POST", "HEAD", "DELETE", "OPTIONS", "TRACE", "PUT", "PATCH"],
+    methods=[
+        "GET",
+        "POST",
+        "HEAD",
+        "DELETE",
+        "OPTIONS",
+        "TRACE",
+        "PUT",
+        "PATCH",
+        "PROPFIND",
+    ],
 )
 async def catch_all(request: Request, full_path: str, response: Response):
     template = ENVIRONMENT.get_template("home.html.jinja")
