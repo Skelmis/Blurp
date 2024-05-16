@@ -11,8 +11,7 @@
         <b>Request made at:</b><br>
         <ul>
             <li>{{ made_at_time }}</li>
-            <li>{{ made_at }}</li>
-            <li>{{ request.made_at }}</li>
+            <li>{{ request.made_at.strftime("%-I:%M:%S %p, %d-%m-%Y %Z") }}</li>
         </ul>
         <b>Headers:</b>
         <ul>
