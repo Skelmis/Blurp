@@ -8,7 +8,8 @@
         <section>
         <ul>
             {% for request in requests %}
-                <li><a href="/requests/{% if  authed %}authed/{% endif %}{{ request.uuid }}"> {{ request.type }} {{ request.url }}{% if show_query_params %}{% if request.query_params %}?{{ request.query_params }}{% endif %}{% endif %} </a></li>
+                <li><a href="/requests/{% if  authed %}authed/{% endif %}{{ request.uuid }}"> {{ request.type }}
+                    {% if hide_urls %}- {{ request.made_at.strftime("%-I:%M:%S %p, %d-%m-%Y %Z") }}{% else %}{{ request.url }}{% if show_query_params %}{% if request.query_params %}?{{ request.query_params }}{% endif %}{% endif %}{% endif %} </a></li>
             {% endfor %}
         </ul>
         </section>

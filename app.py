@@ -55,7 +55,7 @@ ENVIRONMENT = jinja2.Environment(
 )
 security = HTTPBasic()
 
-
+HIDE_URLS = os.environ.get("HIDE_URLS")
 USERNAME = os.environ.get("REQUEST_USERNAME")
 PASSWORD = os.environ.get("REQUEST_PASSWORD")
 REQUIRES_AUTH = USERNAME is not None and PASSWORD is not None
@@ -153,6 +153,7 @@ async def catch_all(request: Request, full_path: str, response: Response):
         requests=requests,
         show_query_params=not hide_query_params,
         authed=REQUIRES_AUTH,
+        hide_urls=HIDE_URLS,
     )
     return HTMLResponse(
         content,
