@@ -13,7 +13,7 @@ from piccolo_admin.endpoints import create_admin
 from piccolo.engine import engine_finder
 from starlette import status
 from starlette.requests import Request
-from starlette.responses import HTMLResponse, Response
+from starlette.responses import HTMLResponse, Response, RedirectResponse
 from starlette.routing import Mount
 from starlette.staticfiles import StaticFiles
 
@@ -87,11 +87,23 @@ def get_current_username(
     return credentials.username
 
 
-@app.get("/requests/{request_uuid}")
-async def view_request(
+@app.get("/requests/authed/{request_uuid}")
+async def view_authed_request(
     request_uuid: uuid.UUID,
     _: Annotated[str, Depends(get_current_username)],
 ):
+    return await view_request(request_uuid)
+
+
+@app.get("/requests/{request_uuid}")
+async def view_no_auth_request(request_uuid: uuid.UUID):
+    if not REQUIRES_AUTH:
+        return await view_request(request_uuid)
+
+    return RedirectResponse(f"/requests/authed/{request_uuid}")
+
+
+async def view_request(request_uuid: uuid.UUID):
     request_made: RequestMade = await RequestMade.objects().get(
         RequestMade.uuid == request_uuid
     )
@@ -140,6 +152,7 @@ async def catch_all(request: Request, full_path: str, response: Response):
         title="Incoming requests",
         requests=requests,
         show_query_params=not hide_query_params,
+        authed=REQUIRES_AUTH,
     )
     return HTMLResponse(
         content,
