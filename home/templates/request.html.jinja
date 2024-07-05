@@ -20,7 +20,11 @@
             {% endfor %}
 
         </ul><br>
+        {% if request.body %}
         <b>Body:</b><br>{{ request.body }}
+        {% else %}
+        <b>No request body.</b>
+        {% endif %}
         </section>
         <section>
             <a href="/">Go home</a>
