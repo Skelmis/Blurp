@@ -21,7 +21,7 @@
 
         </ul><br>
         {% if request.body %}
-        <b>Body:</b><br>{{ request.body }}
+        <b>Body:</b><br><pre class="code-block">{{ request.body }}</pre>
         {% else %}
         <b>No request body.</b>
         {% endif %}
