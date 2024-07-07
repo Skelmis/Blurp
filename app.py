@@ -1,6 +1,7 @@
 import os
 import secrets
 import uuid
+from copy import deepcopy
 from typing import Annotated
 
 import humanize
@@ -29,8 +30,19 @@ headers = {
     "x-content-type-options": "nosniff",
     "referrer-policy": "strict-origin",
     "permissions-policy": "microphone=(); geolocation=(); fullscreen=();",
-    # "content-security-policy": "default-src 'none'; script-src 'none'",
+    "content-security-policy": "default-src 'none'; frame-ancestors 'none'; object-src 'none';"
+    " base-uri 'none'; script-src 'nonce-{}' 'strict-dynamic'; style-src 'nonce-{}' 'strict-dynamic'; require-trusted-types-for 'script'",
 }
+
+
+def get_sec_headers() -> tuple[dict, str]:
+    nonce = secrets.token_urlsafe(16)
+    local_headers = deepcopy(headers)
+    local_headers["content-security-policy"] = local_headers[
+        "content-security-policy"
+    ].format(nonce, nonce)
+    return local_headers, nonce
+
 
 app = FastAPI(
     routes=[
@@ -39,7 +51,12 @@ app = FastAPI(
             create_admin(
                 tables=APP_CONFIG.table_classes,
                 # Required when running under HTTPS:
-                # allowed_hosts=['my_site.com']
+                # allowed_hosts=['my_site.com'],
+                allowed_hosts=["blurp.skelmis.co.nz"],
+                production=True,
+                sidebar_links={"Site root": "/"},
+                site_name="Blurp Admin",
+                auto_include_related=True,
             ),
         ),
         Mount("/static/", StaticFiles(directory="static")),
@@ -109,14 +126,16 @@ async def view_request(request_uuid: uuid.UUID):
     )
     template = ENVIRONMENT.get_template("request.html.jinja")
 
+    sec_headers, nonce = get_sec_headers()
     content = template.render(
         title=f"Request {request_made.uuid}",
         request=request_made,
+        csp_nonce=nonce,
         headers=orjson.loads(request_made.headers),
         made_at=humanize.naturaldate(request_made.made_at),
         made_at_time=humanize.naturaltime(request_made.made_at),
     )
-    return HTMLResponse(content)
+    return HTMLResponse(content, headers=sec_headers)
 
 
 @app.api_route(
@@ -148,16 +167,18 @@ async def catch_all(request: Request, full_path: str, response: Response):
         await RequestMade.objects().order_by(RequestMade.id, ascending=False).limit(25)
     )
 
+    sec_headers, nonce = get_sec_headers()
     content = template.render(
         title="Incoming requests",
         requests=requests,
+        csp_nonce=nonce,
         show_query_params=not hide_query_params,
         authed=REQUIRES_AUTH,
         hide_urls=HIDE_URLS,
     )
     return HTMLResponse(
         content,
-        headers=headers,
+        headers=sec_headers,
     )
 
 
