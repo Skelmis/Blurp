@@ -10,7 +10,8 @@ import orjson
 from dotenv import load_dotenv
 from fastapi import FastAPI, Depends, HTTPException
 from fastapi.security import HTTPBasic, HTTPBasicCredentials
-from piccolo_admin.endpoints import create_admin
+from piccolo.query.mixins import OrderBy
+from piccolo_admin.endpoints import create_admin, TableConfig
 from piccolo.engine import engine_finder
 from starlette import status
 from starlette.requests import Request
@@ -44,12 +45,18 @@ def get_sec_headers() -> tuple[dict, str]:
     return local_headers, nonce
 
 
+requests_tc = TableConfig(
+    RequestMade,
+    menu_group="Main",
+    order_by=[OrderBy(RequestMade.id, ascending=False)],
+)
+
 app = FastAPI(
     routes=[
         Mount(
             "/admin/",
             create_admin(
-                tables=APP_CONFIG.table_classes,
+                tables=[requests_tc],
                 # Required when running under HTTPS:
                 # allowed_hosts=['my_site.com'],
                 allowed_hosts=["blurp.skelmis.co.nz"],
