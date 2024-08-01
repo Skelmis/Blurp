@@ -10,8 +10,7 @@ import orjson
 from dotenv import load_dotenv
 from fastapi import FastAPI, Depends, HTTPException
 from fastapi.security import HTTPBasic, HTTPBasicCredentials
-from piccolo.query.mixins import OrderBy
-from piccolo_admin.endpoints import create_admin, TableConfig
+from piccolo_admin.endpoints import create_admin, TableConfig, OrderBy
 from piccolo.engine import engine_finder
 from starlette import status
 from starlette.requests import Request
@@ -19,7 +18,6 @@ from starlette.responses import HTMLResponse, Response, RedirectResponse
 from starlette.routing import Mount
 from starlette.staticfiles import StaticFiles
 
-from home.piccolo_app import APP_CONFIG
 from home.tables import RequestMade
 
 load_dotenv()
