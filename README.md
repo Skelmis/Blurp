@@ -19,6 +19,7 @@ Some example requests:
 ##### Configuration
 
 The following environment variables can be set to modify behaviour:
+- `PORT`: The port to serve the server on, defaults to `2300`
 - `SERVING_DOMAIN`: A comma seperated string denoting expected hosts for this site
 - `HIDE_QUERY_PARAMS`: Setting this to any value will hide query parameters on the home page
 - `HIDE_URLS`: Setting this will hide URL's on the home page and instead only show timestamps
