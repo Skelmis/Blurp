@@ -25,12 +25,12 @@ load_dotenv()
 hide_query_params = os.environ.get("HIDE_QUERY_PARAMS", None) is not None
 headers = {
     "x-frame-options": "SAMEORIGIN",
-    "x-xss-protection": "1; mode=block",
     "x-content-type-options": "nosniff",
     "referrer-policy": "strict-origin",
     "permissions-policy": "microphone=(); geolocation=(); fullscreen=();",
     "content-security-policy": "default-src 'none'; frame-ancestors 'none'; object-src 'none';"
-    " base-uri 'none'; script-src 'nonce-{}' 'strict-dynamic'; style-src 'nonce-{}' 'strict-dynamic'; require-trusted-types-for 'script'",
+    " base-uri 'none'; script-src 'nonce-{}' 'strict-dynamic'; style-src 'nonce-{}' "
+    "'strict-dynamic'; require-trusted-types-for 'script'",
 }
 
 
@@ -55,9 +55,7 @@ app = FastAPI(
             "/admin/",
             create_admin(
                 tables=[requests_tc],
-                # Required when running under HTTPS:
-                # allowed_hosts=['my_site.com'],
-                allowed_hosts=["blurp.skelmis.co.nz"],
+                allowed_hosts=os.environ.get("SERVING_DOMAIN", "").split(","),
                 production=True,
                 sidebar_links={"Site root": "/"},
                 site_name="Blurp Admin",
