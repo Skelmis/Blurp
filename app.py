@@ -30,7 +30,7 @@ headers = {
     "permissions-policy": "microphone=(); geolocation=(); fullscreen=();",
     "content-security-policy": "default-src 'none'; frame-ancestors 'none'; object-src 'none';"
     " base-uri 'none'; script-src 'nonce-{}' 'strict-dynamic'; style-src 'nonce-{}' "
-    "'strict-dynamic'; require-trusted-types-for 'script'",
+    "'strict-dynamic'; require-trusted-types-for 'script'; img-src 'nonce-{}'",
 }
 
 
@@ -39,7 +39,7 @@ def get_sec_headers() -> tuple[dict, str]:
     local_headers = deepcopy(headers)
     local_headers["content-security-policy"] = local_headers[
         "content-security-policy"
-    ].format(nonce, nonce)
+    ].format(nonce, nonce, nonce, nonce)
     return local_headers, nonce
 
 
