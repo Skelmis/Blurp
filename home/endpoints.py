@@ -21,7 +21,6 @@ IGNORE_FROM_SELF: bool = commons.value_to_bool(os.environ.get("IGNORE_FROM_SELF"
 
 @get("/b/requests/{request_uuid: str}", middleware=[EnsureAuth])
 async def view_authed_request(request_uuid: uuid.UUID) -> Template:
-
     csp, nonce = get_csp()
     request_made: RequestMade = await RequestMade.objects().get(
         RequestMade.uuid == request_uuid
@@ -32,7 +31,7 @@ async def view_authed_request(request_uuid: uuid.UUID) -> Template:
     return Template(
         template_name="request.jinja",
         context={
-            "title": "View request",
+            "title": f"Request {request_made.uuid}",
             "csp_nonce": nonce,
             "request_made": request_made,
             "headers": orjson.loads(request_made.headers),

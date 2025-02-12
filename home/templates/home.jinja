@@ -1,20 +1,37 @@
 {% extends "base.jinja" %}
 
 {% block content %}
-<div class="page page-center">
-      <div class="container py-4">
-      {% include 'alerts.jinja' %}
-        <div class="card card-md">
-        {{ title }}
-          <div class="card-body">
-        <section>
-        <ul>
-            {% for request in requests %}
-                <li><a href="/b/requests/{% if  authed %}authed/{% endif %}{{ request.uuid }}"> {{ request.type }}
-                    {% if hide_urls %}- {{ request.made_at.strftime("%-I:%M:%S %p, %d-%m-%Y %Z") }}{% else %}{{ request.url }}{% if show_query_params %}{% if request.query_params %}?{{ request.query_params }}{% endif %}{% endif %}{% endif %} </a></li>
-            {% endfor %}
-        </ul>
-        </section>
-        <i>All requests sent to this site are logged here.</i>
+    <div class="page page-center">
+        <div class="container py-4">
+
+            <div class="page-header d-print-none">
+                <div class="container-xl">
+                    <div class="row g-2 align-items-center">
+                        <div class="col">
+                            <h2 class="page-title">
+                                {{ title }}
+                            </h2><br>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% include 'alerts.jinja' %}
+            <div class="card card-md">
+                <div class="card-body">
+                    <ul>
+                        {% for request in requests %}
+                            <li>
+                                <a href="/b/requests/{% if  authed %}authed/{% endif %}{{ request.uuid }}"> {{ request.type }}
+                                    {% if hide_urls %}-
+                                        {{ request.made_at.strftime("%-I:%M:%S %p, %d-%m-%Y %Z") }}{% else %}{{ request.url }}
+                                        {% if show_query_params %}{% if request.query_params %}?
+                                            {{ request.query_params }}
+                                        {% endif %}{% endif %}{% endif %} </a></li>
+                        {% endfor %}
+                    </ul>
+                    <i>All requests sent to this site are logged here.</i>
+                </div>
+            </div>
+        </div>
     </div>
 {% endblock content %}
