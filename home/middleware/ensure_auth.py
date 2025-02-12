@@ -52,8 +52,11 @@ class EnsureAuth(AbstractAuthenticationMiddleware):
         )
 
         if not user_id:
-            alert(connection, "Please authenticate to view this resource")
-            raise RedirectForAuth(possible_redirect)
+            if fail_on_not_set:
+                alert(connection, "Please authenticate to view this resource")
+                raise RedirectForAuth(possible_redirect)
+
+            return None
 
         return (
             await cls.auth_table.objects()

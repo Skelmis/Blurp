@@ -108,6 +108,7 @@ app = Litestar(
         endpoints.catch_all,
         controllers.LogoutController,
         controllers.LoginController,
+        controllers.PasswordController,
     ],
     template_config=template_config,
     static_files_config=[

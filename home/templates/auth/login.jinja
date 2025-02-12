@@ -24,7 +24,7 @@
                 </div>
               </div>
                 <span class="form-label">
-                    Forgot password? Ask your admin.
+                    <a href="{{url_for('forgot_password')}}">I forgot my password</a>
                   </span>
               <div class="form-footer">
                 <button type="submit" class="btn btn-primary w-100">Sign in</button>
@@ -34,9 +34,11 @@
             </form>
           </div>
         </div>
+      {% if has_registration %}
       	<div class="text-center text-secondary mt-3">
-          Don't have account yet? Ask your instance admin for one.
+          Don't have account yet? <a href="{{ url_for('signup') }}" tabindex="-1">Sign up</a>
         </div>
+      {% endif %}
       </div>
     </div>
 {% endblock %}
