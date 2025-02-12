@@ -8,11 +8,11 @@
         <section>
         <ul>
             {% for request in requests %}
-                <li><a href="/requests/{% if  authed %}authed/{% endif %}{{ request.uuid }}"> {{ request.type }}
+                <li><a href="/b/requests/{% if  authed %}authed/{% endif %}{{ request.uuid }}"> {{ request.type }}
                     {% if hide_urls %}- {{ request.made_at.strftime("%-I:%M:%S %p, %d-%m-%Y %Z") }}{% else %}{{ request.url }}{% if show_query_params %}{% if request.query_params %}?{{ request.query_params }}{% endif %}{% endif %}{% endif %} </a></li>
             {% endfor %}
         </ul>
         </section>
-        <i>All requests sent to this site are logged here.</i> Source code lives <a href="https://github.com/Skelmis/Blurp">here</a>.
+        <i>All requests sent to this site are logged here.</i> Source code lives <a href="https://github.com/Skelmis/Blurp">here</a>. Admin panel <a href="/b/admin/">here</a>.
     </div>
 {% endblock content %}

@@ -13,6 +13,8 @@ skelmis-commons = "^1.4.0"
 piccolo-api = "^1.5.2"
 piccolo-admin = "^1.9.1"
 python-dotenv = "^1.0.1"
+orjson = "^3.10.15"
+humanize = "^4.11.0"
 
 
 [tool.poetry.group.dev.dependencies]

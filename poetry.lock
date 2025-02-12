@@ -539,6 +539,20 @@ socks = ["socksio (==1.*)"]
 zstd = ["zstandard (>=0.18.0)"]
 
 [[package]]
+name = "humanize"
+version = "4.11.0"
+description = "Python humanize utilities"
+optional = false
+python-versions = ">=3.9"
+files = [
+    {file = "humanize-4.11.0-py3-none-any.whl", hash = "sha256:b53caaec8532bcb2fff70c8826f904c35943f8cecaca29d272d9df38092736c0"},
+    {file = "humanize-4.11.0.tar.gz", hash = "sha256:e66f36020a2d5a974c504bd2555cf770621dbdbb6d82f94a6857c0b1ea2608be"},
+]
+
+[package.extras]
+tests = ["freezegun", "pytest", "pytest-cov"]
+
+[[package]]
 name = "hypercorn"
 version = "0.17.3"
 description = "A ASGI Server based on Hyper libraries and inspired by Gunicorn"
@@ -1847,4 +1861,4 @@ h11 = ">=0.9.0,<1"
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.12"
-content-hash = "6470f4688b96d81deae1440ed14ec873b35112dfd8d76a4ab2cccc24b91d635b"
+content-hash = "0e90dec884b1d2bfed8475d7f51129c7d57dda90c7f4418dd6570e029c9e2493"
