@@ -2,7 +2,7 @@ version: "2.2"
 
 services:
   data_db:
-    image: postgres:14.7
+    image: postgres:17
     container_name: "db.blurp.skelmis.co.nz"
     restart: always
     command: -p 2301
