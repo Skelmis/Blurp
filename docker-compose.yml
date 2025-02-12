@@ -7,7 +7,7 @@ services:
     restart: always
     command: -p 2301
     ports:
-      - "2301:2301"
+      - "127.0.0.1:2301:2301"
     environment:
       PGDATA: /var/lib/postgresql/data/pgdata
       POSTGRES_DB: data_skelmis_co_nz
@@ -20,7 +20,7 @@ services:
     container_name: "web_blurp.skelmis.co.nz"
     restart: always
     ports:
-      - "2300:2300"
+      - "127.0.0.1:2300:2300"
     depends_on:
       - data_db
     cpus: 1
