@@ -14,4 +14,4 @@ class RequestMade(Table):
     made_at: datetime.datetime = Timestamptz(help_text="When the request was made")
     type: str = Text(help_text="Type of request made, think GET")
     uuid = UUID(help_text="A UUID instead of enumerable id", index=True)
-    domain = Text(help_text="The domain this request was made to", default="")
+    domain = Text(help_text="The domain this request was made to")
