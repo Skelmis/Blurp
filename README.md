@@ -16,7 +16,7 @@ Some example requests:
 ![img.png](images/img.png)
 ![img_1.png](images/img_1.png)
 
-##### Configuration
+### Configuration
 
 The following environment variables can be set to modify behaviour:
 - `PORT`: The port to serve the server on, defaults to `2300`
@@ -24,6 +24,14 @@ The following environment variables can be set to modify behaviour:
 - `HIDE_QUERY_PARAMS`: Setting this to any value will hide query parameters on the home page
 - `HIDE_URLS`: Setting this will hide URL's on the home page and instead only show timestamps
 - `ONLY_SHOW_CURRENT_DOMAIN`: Setting this value means only requests to the current domain are shown
-- Set both of the following to enforce a password when viewing request values:
-  - `REQUEST_USERNAME`: The username for basic auth
-  - `REQUEST_PASSWORD`: The password for basic auth
+- `REQUIRE_AUTH`: Set this configuration to require auth to view requests
+- `IGNORE_FROM_SELF`: If set, don't log requests made from authed users
+
+### Initial Setup
+
+- Make a copy of `docker-compose.yml`
+- Modify all the passwords and environment variables to your liking
+- Deploy it with `docker compose up -d`
+- Point your domains at the site
+- Create a new superuser using `piccolo user create` in the docker shell
+  - Tick yes to all three provided options

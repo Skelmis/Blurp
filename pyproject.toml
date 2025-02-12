@@ -1,0 +1,25 @@
+[tool.poetry]
+name = "blurp"
+version = "1.0.0"
+description = "A simple request logger for SSRF purposes :P"
+authors = ["skelmis <skelmis.craft@gmail.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.12"
+piccolo = {extras = ["all"], version = "^1.22.0"}
+litestar = {extras = ["cryptography"], version = "^2.14.0"}
+skelmis-commons = "^1.4.0"
+piccolo-api = "^1.5.2"
+piccolo-admin = "^1.9.1"
+python-dotenv = "^1.0.1"
+orjson = "^3.10.15"
+humanize = "^4.11.0"
+
+
+[tool.poetry.group.dev.dependencies]
+black = "^25.1.0"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

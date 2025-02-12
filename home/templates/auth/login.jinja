@@ -1,0 +1,42 @@
+{% extends 'base.jinja' %}
+{% block title %}Login{% endblock %}
+{% block content %}
+<div class="page page-center">
+      <div class="container container-tight py-4">
+      {% include 'alerts.jinja' %}
+        <div class="card card-md">
+          <div class="card-body">
+            <h2 class="h2 text-center mb-4">Login to your account</h2>
+            <form method="POST" autocomplete="off" novalidate>
+                {% if csrftoken and csrf_cookie_name %}
+                    <input type="hidden" name="{{ csrf_cookie_name }}" value="{{ csrftoken }}" />
+                {% endif %}
+              <div class="mb-3">
+                <label class="form-label">Username</label>
+                <input name="username" type="text" class="form-control" placeholder="Your username" autocomplete="off">
+              </div>
+              <div class="mb-2">
+                <label class="form-label">
+                  Password
+                </label>
+                <div class="input-group input-group-flat">
+                  <input name="password" type="password" class="form-control"  placeholder="Your password"  autocomplete="off">
+                </div>
+              </div>
+                <span class="form-label">
+                    Forgot password? Ask your admin.
+                  </span>
+              <div class="form-footer">
+                <button type="submit" class="btn btn-primary w-100">Sign in</button>
+              </div>
+            <!-- This tells the endpoint to returns a HTML response if login fails. -->
+        <input type="hidden" value="html" name="format" />
+            </form>
+          </div>
+        </div>
+      	<div class="text-center text-secondary mt-3">
+          Don't have account yet? Ask your instance admin for one.
+        </div>
+      </div>
+    </div>
+{% endblock %}

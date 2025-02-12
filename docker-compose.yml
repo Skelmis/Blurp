@@ -33,7 +33,11 @@ services:
       POSTGRES_USER: XXX
       POSTGRES_PASSWORD: XXX
       POSTGRES_PORT: 2301
-      PROD: 1
+      HIDE_QUERY_PARAMS: 0
+      HIDE_URLS: 0
+      ONLY_SHOW_CURRENT_DOMAIN: 0
+      REQUIRE_AUTH: 0
+      IGNORE_FROM_SELF: 1
 
 #networks:
 #  default:

@@ -2,10 +2,11 @@ import datetime
 
 
 from piccolo.table import Table
-from piccolo.columns import Text, Timestamptz, UUID
+from piccolo.columns import Text, Timestamptz, UUID, Serial
 
 
 class RequestMade(Table):
+    id: Serial
     headers: str = Text(help_text="Headers as json string")
     body: str = Text(help_text="The body of the request")
     url: str = Text(help_text="The url a request was made to")
