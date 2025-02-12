@@ -16,7 +16,7 @@ Some example requests:
 ![img.png](images/img.png)
 ![img_1.png](images/img_1.png)
 
-##### Configuration
+### Configuration
 
 The following environment variables can be set to modify behaviour:
 - `PORT`: The port to serve the server on, defaults to `2300`
@@ -27,3 +27,9 @@ The following environment variables can be set to modify behaviour:
 - Set both of the following to enforce a password when viewing request values:
   - `REQUEST_USERNAME`: The username for basic auth
   - `REQUEST_PASSWORD`: The password for basic auth
+
+### Initial Setup
+
+- Deploy using Docker
+- Create a new superuser using `piccolo user create`
+  - Tick yes to all three provided options
