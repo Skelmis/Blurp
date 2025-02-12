@@ -16,6 +16,7 @@ from home.util import get_csp
 load_dotenv()
 HIDE_QUERY_PARAMS = os.environ.get("HIDE_QUERY_PARAMS", None) is not None
 HIDE_URLS: bool = commons.value_to_bool(os.environ.get("HIDE_URLS"))
+IGNORE_FROM_SELF: bool = commons.value_to_bool(os.environ.get("IGNORE_FROM_SELF"))
 
 
 @get("/b/requests/{request_uuid: str}", middleware=[EnsureAuth])
@@ -61,15 +62,16 @@ async def catch_all(request: Request, full_path: str = "/") -> Template:
         request, fail_on_not_set=False
     )
     csp, nonce = get_csp()
-    request_made: RequestMade = RequestMade(
-        headers=orjson.dumps(dict(request.headers)).decode("utf-8"),
-        body=(await request.body()).decode("utf-8"),
-        url=full_path,
-        query_params=request.url.query,
-        type=request.method,
-        domain=request.headers["host"],
-    )
-    await request_made.save()
+    if not (IGNORE_FROM_SELF and request.user is not None):
+        request_made: RequestMade = RequestMade(
+            headers=orjson.dumps(dict(request.headers)).decode("utf-8"),
+            body=(await request.body()).decode("utf-8"),
+            url=full_path,
+            query_params=request.url.query,
+            type=request.method,
+            domain=request.headers["host"],
+        )
+        await request_made.save()
 
     request_query = RequestMade.objects().order_by(RequestMade.id, ascending=False)
     if commons.value_to_bool(os.environ.get("ONLY_SHOW_CURRENT_DOMAIN", False)) is True:

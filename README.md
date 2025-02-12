@@ -25,6 +25,7 @@ The following environment variables can be set to modify behaviour:
 - `HIDE_URLS`: Setting this will hide URL's on the home page and instead only show timestamps
 - `ONLY_SHOW_CURRENT_DOMAIN`: Setting this value means only requests to the current domain are shown
 - `REQUIRE_AUTH`: Set this configuration to require auth to view requests
+- `IGNORE_FROM_SELF`: If set, don't log requests made from authed users
 
 ### Initial Setup
 
