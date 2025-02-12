@@ -14,7 +14,7 @@ services:
       POSTGRES_USER: data_autohelp_db_user
       POSTGRES_PASSWORD: product-defeat-follow-worshiper-swimwear-drown
     volumes:
-      - .db:/var/lib/postgresql/data
+      - .db_v17:/var/lib/postgresql/data
   data_web:
     image: ghcr.io/skelmis/blurp:master
     container_name: "web_blurp.skelmis.co.nz"
