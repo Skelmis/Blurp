@@ -1,16 +1,34 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Blurp</title>
-    <link rel="icon" href="/static/favicon.ico" nonce="{{ csp_nonce }}"/>
-    <link href="/static/main.css" rel="stylesheet" nonce="{{ csp_nonce }}">
-</head>
-
-<body>
+  <head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"/>
+    <meta http-equiv="X-UA-Compatible" content="ie=edge"/>
+    <title>{% block title %}Blurp{% endblock %}</title>
+    <!-- CSS files -->
+    <script src="https://cdn.jsdelivr.net/npm/@tabler/core@1.0.0-beta17/dist/js/tabler.min.js" nonce="{{ csp_nonce }}"></script>
+    {#<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/core@1.0.0-beta17/dist/css/tabler.min.css">#}
+    <link href="/static/main.css" rel="stylesheet" nonce="{{ csp_nonce }}"/>
+    <style>
+      @import url('https://rsms.me/inter/inter.css');
+      :root {
+      	--tblr-font-sans-serif: 'Inter Var', -apple-system, BlinkMacSystemFont, San Francisco, Segoe UI, Roboto, Helvetica Neue, sans-serif;
+      }
+      body {
+      	font-feature-settings: "cv03", "cv04", "cv11";
+      }
+    </style>
+  </head>
+  <body >
+    {% include 'sidebar.jinja' %}
+    <script src="/static/theme.js" nonce="{{ csp_nonce }}"></script>
     {% block content %}{% endblock %}
-</body>
-
+    {% if is_small is defined %}
+        {% if is_small %}
+        <div class="sidebar_bottom ">
+            Not for commercial usage
+        </div>
+        {% endif %}
+    {% endif %}
+  </body>
 </html>

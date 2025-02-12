@@ -1,0 +1,109 @@
+{% macro base_item(display ,href, svg='') %}
+<li class="nav-item">
+    <a class="nav-link" href="{{ href }}">
+    <span class="nav-link-icon d-md-none d-lg-inline-block">
+        {{ svg|safe }}
+    </span>
+    <span class="nav-link-title">
+        {{ display }}
+    </span>
+    </a>
+</li>
+{%- endmacro %}
+{% macro start_dropdown(title, svg='') %}
+<li class="nav-item dropdown">
+<a class="nav-link dropdown-toggle" href="#navbar-{{ title|lower }}" data-bs-toggle="dropdown"
+   data-bs-auto-close="false" role="button" aria-expanded="false">
+<span class="nav-link-icon d-md-none d-lg-inline-block">
+{{svg|safe}}
+</span>
+    <span class="nav-link-title">
+{{ title }}
+</span>
+</a>
+<div class="dropdown-menu">
+<div class="dropdown-menu-columns">
+<div class="dropdown-menu-column">
+{%- endmacro %}
+{% macro dropdown_item(text, href) %}
+<a class="dropdown-item" href="{{ href }}">
+    {{ text }}
+</a>
+{%- endmacro %}
+{% macro end_dropdown() %}
+    </div>
+    </div>
+    </div>
+    </li>
+{%- endmacro %}
+{#This is used to make a dropdown in a dropdown#}
+{% macro nested_dropdown_menu(title) %}
+    <div class="dropend">
+        <a class="dropdown-item dropdown-toggle" href="#sidebar-{{ title|lower }}"
+           data-bs-toggle="dropdown" data-bs-auto-close="false" role="button"
+           aria-expanded="false">
+            {{ title }}
+        </a>
+    <div class="dropdown-menu">
+{%- endmacro %}
+{% macro end_nested_dropdown_menu() %}
+    </div>
+    </div>
+{%- endmacro %}
+{% macro create_project(name, id) %}
+    {{ dropdown_item(name, '/projects/'+id) }}
+{#    {{ nested_dropdown_menu(name) }}#}
+{#    {{ dropdown_item('Overview', '/projects/'+id) }}#}
+{#    {{ dropdown_item('Vulnerabilities', '/projects/'+id+'/vulnerabilities') }}#}
+{#    {{ dropdown_item('Settings', '/projects/'+id+'/settings') }}#}
+{#    {{ end_nested_dropdown_menu() }}#}
+{%- endmacro %}
+<aside class="navbar navbar-vertical navbar-expand-lg" data-bs-theme="dark">
+    <div class="container-fluid">
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#sidebar-menu"
+                aria-controls="sidebar-menu" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <h1 class="navbar-brand navbar-brand-autodark">
+            <a href=".">
+                Blurp
+            </a>
+        </h1>
+        <div class="collapse navbar-collapse" id="sidebar-menu">
+            <ul class="navbar-nav pt-lg-3">
+                {{ base_item('Home', '/', '<svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24"
+                         stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round"
+                         stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"></path><path
+                            d="M5 12l-2 0l9 -9l9 9l-2 0"></path><path
+                            d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7"></path><path
+                            d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6"></path></svg>') }}
+
+
+                {% if request.scope.get('user') and request.user.admin %}
+                    {{ base_item('Admin Dashboard', '/b/admin/', '<svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-brand-tabler"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M8 9l3 3l-3 3" /><path d="M13 15h3" /><path d="M3 7a4 4 0 0 1 4 -4h10a4 4 0 0 1 4 4v10a4 4 0 0 1 -4 4h-10a4 4 0 0 1 -4 -4z" /></svg>') }}
+                {% endif %}
+                {% if request.scope.get('user') %}
+                    {{ base_item('Sign out', url_for('signout'), '<svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-logout"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M14 8v-2a2 2 0 0 0 -2 -2h-7a2 2 0 0 0 -2 2v12a2 2 0 0 0 2 2h7a2 2 0 0 0 2 -2v-2" /><path d="M9 12h12l-3 -3" /><path d="M18 15l3 -3" /></svg>') }}
+                {% else %}
+                    {{ base_item('Sign in', url_for('login'), '<svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-login"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M15 8v-2a2 2 0 0 0 -2 -2h-7a2 2 0 0 0 -2 2v12a2 2 0 0 0 2 2h7a2 2 0 0 0 2 -2v-2" /><path d="M21 12h-13l3 -3" /><path d="M11 15l-3 -3" /></svg>') }}
+                {% endif %}
+                {{ start_dropdown('Extra', '<svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24"stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round"stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"></path><path  d="M12 12m-4 0a4 4 0 1 0 8 0a4 4 0 1 0 -8 0"></path><path d="M12 12m-9 0a9 9 0 1 0 18 0a9 9 0 1 0 -18 0"></path><path d="M15 15l3.35 3.35"></path><path d="M9 15l-3.35 3.35"></path><path d="M5.65 5.65l3.35 3.35"></path><path  d="M18.35 5.65l-3.35 3.35"></path></svg>') }}
+                {{ dropdown_item('Source Code', 'https://github.com/skelmis/blurp') }}
+                        <a class="dropdown-item text-pink" href="https://github.com/sponsors/skelmis" target="_blank"
+                           rel="noopener">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-inline me-1" width="24" height="24"
+                                 viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
+                                 stroke-linecap="round" stroke-linejoin="round">
+                                <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                <path d="M19.5 12.572l-7.5 7.428l-7.5 -7.428a5 5 0 1 1 7.5 -6.566a5 5 0 1 1 7.5 6.572"></path>
+                            </svg>
+                            Sponsor project
+                        </a>
+                {{ end_dropdown() }}
+            </ul>
+            <div class="sidebar_bottom ">
+                Not for commercial usage
+            </div>
+        </div>
+    </div>
+</aside>

@@ -1,10 +1,12 @@
 {% extends "base.jinja" %}
 
 {% block content %}
-    <div class="hero">
-        <h1>{{ title }}</h1>
-    </div>
-    <div class="content">
+<div class="page page-center">
+      <div class="container py-4">
+      {% include 'alerts.jinja' %}
+        <div class="card card-md">
+        {{ title }}
+          <div class="card-body">
         <section>
         <b>Type:</b> {{ request_made.type }}<br>
         <b>URL:</b> {{ request_made.url }}{% if request_made.query_params %}?{{ request_made.query_params }}{% endif %}<br>
@@ -29,5 +31,8 @@
         <section>
             <a href="/">Go home</a>
         </section>
+    </div>
+    </div>
+    </div>
     </div>
 {% endblock content %}

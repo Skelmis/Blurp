@@ -57,6 +57,9 @@ async def view_authed_request(request_uuid: uuid.UUID) -> Template:
     ],
 )
 async def catch_all(request: Request, full_path: str = "/") -> Template:
+    request.scope["user"] = await EnsureAuth.get_user_from_connection(
+        request, fail_on_not_set=False
+    )
     csp, nonce = get_csp()
     request_made: RequestMade = RequestMade(
         headers=orjson.dumps(dict(request.headers)).decode("utf-8"),

@@ -4,6 +4,7 @@ import os
 
 import commons
 from dotenv import load_dotenv
+from litestar import Request
 from litestar.connection import ASGIConnection
 from litestar.exceptions import NotAuthorizedException
 from litestar.middleware import (
@@ -21,20 +22,50 @@ REQUIRE_AUTH: bool = commons.value_to_bool(os.environ.get("REQUIRE_AUTH"))
 
 
 class EnsureAuth(AbstractAuthenticationMiddleware):
-    def __init__(self, *args, **kwargs) -> None:
-        super().__init__(*args, **kwargs)
-        self.auth_table = BaseUser
-        self.session_table = SessionsBase
-        self.cookie_name = "id"
-        self.admin_only = False
-        self.superuser_only = False
-        self.active_only = True
-        self.increase_expiry = None
+    session_table = SessionsBase
+    auth_table = BaseUser
+    cookie_name = "id"
+    admin_only = False
+    superuser_only = False
+    active_only = True
+    increase_expiry = None
+    requires_auth = REQUIRE_AUTH
+
+    @classmethod
+    async def get_user_from_connection(
+        cls,
+        connection: ASGIConnection | Request,
+        possible_redirect: str = "/",
+        *,
+        fail_on_not_set: bool = True,
+    ) -> BaseUser | None:
+        token = connection.cookies.get(cls.cookie_name, None)
+        if not token:
+            if fail_on_not_set:
+                alert(connection, "Please authenticate to view this resource")
+                raise RedirectForAuth(possible_redirect)
+
+            return None
+
+        user_id = await cls.session_table.get_user_id(
+            token, increase_expiry=cls.increase_expiry
+        )
+
+        if not user_id:
+            alert(connection, "Please authenticate to view this resource")
+            raise RedirectForAuth(possible_redirect)
+
+        return (
+            await cls.auth_table.objects()
+            .where(cls.auth_table._meta.primary_key == user_id)
+            .first()
+            .run()
+        )
 
     async def authenticate_request(
         self, connection: ASGIConnection
     ) -> AuthenticationResult:
-        if not REQUIRE_AUTH:
+        if not self.requires_auth:
             return AuthenticationResult(user=None, auth=None)
 
         possible_redirect = (
@@ -42,24 +73,8 @@ class EnsureAuth(AbstractAuthenticationMiddleware):
             if connection.url.query
             else connection.url.path
         )
-        token = connection.cookies.get(self.cookie_name, None)
-        if not token:
-            alert(connection, "Please authenticate to view this resource")
-            raise RedirectForAuth(possible_redirect)
-
-        user_id = await self.session_table.get_user_id(
-            token, increase_expiry=self.increase_expiry
-        )
-
-        if not user_id:
-            alert(connection, "Please authenticate to view this resource")
-            raise RedirectForAuth(possible_redirect)
-
-        piccolo_user = (
-            await self.auth_table.objects()
-            .where(self.auth_table._meta.primary_key == user_id)
-            .first()
-            .run()
+        piccolo_user = await self.get_user_from_connection(
+            connection, possible_redirect
         )
 
         if not piccolo_user:
