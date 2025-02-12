@@ -4,6 +4,7 @@ import uuid
 from copy import deepcopy
 from typing import Annotated
 
+import commons
 import humanize
 import jinja2
 import orjson
@@ -163,12 +164,17 @@ async def catch_all(request: Request, full_path: str, response: Response):
         url=f"/{full_path}",
         query_params=str(request.query_params),
         type=request.method,
+        domain=request.headers["host"],
     )
     await request_made.save()
 
-    requests = (
-        await RequestMade.objects().order_by(RequestMade.id, ascending=False).limit(25)
-    )
+    request_query = RequestMade.objects().order_by(RequestMade.id, ascending=False)
+    if commons.value_to_bool(os.environ.get("ONLY_SHOW_CURRENT_DOMAIN", False)) is True:
+        request_query = request_query.where(
+            RequestMade.domain == request.headers["host"]
+        )
+
+    requests = await request_query.limit(25)
 
     sec_headers, nonce = get_sec_headers()
     content = template.render(
