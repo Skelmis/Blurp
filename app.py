@@ -21,7 +21,8 @@ from piccolo.apps.user.tables import BaseUser
 from piccolo.engine import engine_finder
 from piccolo_admin.endpoints import create_admin, TableConfig, OrderBy
 
-from home import endpoints
+from home import endpoints, controllers
+from home.exception_handlers import RedirectForAuth, redirect_for_auth
 from home.tables import RequestMade
 
 load_dotenv()
@@ -101,7 +102,13 @@ template_config = TemplateConfig(
 flash_plugin = FlashPlugin(config=FlashConfig(template_config=template_config))
 session_config = CookieBackendConfig(secret=secrets.token_bytes(16))
 app = Litestar(
-    route_handlers=[admin, endpoints.view_authed_request, endpoints.catch_all],
+    route_handlers=[
+        admin,
+        endpoints.view_authed_request,
+        endpoints.catch_all,
+        controllers.LogoutController,
+        controllers.LoginController,
+    ],
     template_config=template_config,
     static_files_config=[
         StaticFilesConfig(directories=["static"], path="/static/"),
@@ -154,4 +161,7 @@ app = Litestar(
             documentation_only=True,
         ),
     ],
+    exception_handlers={
+        RedirectForAuth: redirect_for_auth,
+    },
 )

@@ -4,19 +4,23 @@ import uuid
 import commons
 import humanize
 import orjson
+from dotenv import load_dotenv
 from litestar import get, MediaType, route, Request
 from litestar.exceptions import NotFoundException
 from litestar.response import Template
 
+from home.middleware import EnsureAuth
 from home.tables import RequestMade
 from home.util import get_csp
 
+load_dotenv()
 HIDE_QUERY_PARAMS = os.environ.get("HIDE_QUERY_PARAMS", None) is not None
-HIDE_URLS = os.environ.get("HIDE_URLS")
+HIDE_URLS: bool = commons.value_to_bool(os.environ.get("HIDE_URLS"))
 
 
-@get("/b/requests/{request_uuid: str}")
+@get("/b/requests/{request_uuid: str}", middleware=[EnsureAuth])
 async def view_authed_request(request_uuid: uuid.UUID) -> Template:
+
     csp, nonce = get_csp()
     request_made: RequestMade = await RequestMade.objects().get(
         RequestMade.uuid == request_uuid
@@ -25,9 +29,9 @@ async def view_authed_request(request_uuid: uuid.UUID) -> Template:
         raise NotFoundException
 
     return Template(
-        template_name="request.html.jinja",
+        template_name="request.jinja",
         context={
-            "title": "Blurp | View request",
+            "title": "View request",
             "csp_nonce": nonce,
             "request_made": request_made,
             "headers": orjson.loads(request_made.headers),
@@ -73,9 +77,9 @@ async def catch_all(request: Request, full_path: str = "/") -> Template:
     requests = await request_query.limit(25)
 
     return Template(
-        template_name="home.html.jinja",
+        template_name="home.jinja",
         context={
-            "title": "Blurp | Incoming requests",
+            "title": "Incoming requests",
             "csp_nonce": nonce,
             "requests": requests,
             "show_query_params": not HIDE_QUERY_PARAMS,

@@ -1,0 +1,23 @@
+{% extends 'base.jinja' %}
+{% block title %}Login{% endblock %}
+{% block content %}
+<div class="page page-center">
+      <div class="container container-tight py-4">
+      {% include 'alerts.jinja' %}
+        <div class="card card-md">
+          <div class="card-body">
+            <h2 class="h2 text-center mb-4">Confirm sign out</h2>
+            <form method="POST" autocomplete="off" novalidate>
+                {% if csrftoken and csrf_cookie_name %}
+                    <input type="hidden" name="{{ csrf_cookie_name }}" value="{{ csrftoken }}" />
+                {% endif %}
+             <p>Are you sure?</p>
+              <div class="form-footer">
+                <button type="submit" class="btn btn-primary w-100">Yes, sign me out</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+{% endblock %}

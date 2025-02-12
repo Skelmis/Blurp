@@ -1,0 +1,34 @@
+{% for message in get_flashes() %}
+    {% if message.category == 'success' %}
+        {% set alert = 'success' %}
+        {% set svg = '<svg xmlns="http://www.w3.org/2000/svg" class="icon alert-icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M5 12l5 5l10 -10" /></svg>' %}
+    {% elif message.category == 'warning' %}
+        {% set alert = 'warning' %}
+        {% set svg = '<svg xmlns="http://www.w3.org/2000/svg" class="icon alert-icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M10.24 3.957l-8.422 14.06a1.989 1.989 0 0 0 1.7 2.983h16.845a1.989 1.989 0 0 0 1.7 -2.983l-8.423 -14.06a1.989 1.989 0 0 0 -3.4 0z" /><path d="M12 9v4" /><path d="M12 17h.01" /></svg>' %}
+    {% elif message.category == 'error' %}
+        {% set alert = 'danger' %}
+        {% set svg = '<svg xmlns="http://www.w3.org/2000/svg" class="icon alert-icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M3 12a9 9 0 1 0 18 0a9 9 0 0 0 -18 0" /><path d="M12 8v4" /><path d="M12 16h.01" /></svg>' %}
+    {% else %}
+{#        Default to info where not specified #}
+        {% set alert = 'info' %}
+        {% set svg = '<svg xmlns="http://www.w3.org/2000/svg" class="icon alert-icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M3 12a9 9 0 1 0 18 0a9 9 0 0 0 -18 0" /><path d="M12 9h.01" /><path d="M11 12h1v4h1" /></svg>' %}
+    {% endif %}
+
+    <div class="alert alert-{{ alert }} alert-dismissible" role="alert">
+    <div class="d-flex">
+    <div>
+        <!-- Download SVG icon from http://tabler-icons.io/i/check -->
+        {{ svg|safe }}
+    </div>
+    <div>
+        {{ message.message }}
+    </div>
+    </div>
+        <a class="btn-close" data-bs-dismiss="alert" aria-label="close">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-x">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+  <path d="M18 6l-12 12"></path>
+  <path d="M6 6l12 12"></path>
+</svg></a>
+    </div>
+{% endfor %}
