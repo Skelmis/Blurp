@@ -8,7 +8,7 @@ from piccolo.conf.apps import AppRegistry
 
 load_dotenv()
 
-if os.environ.get("PROD", None) is not None:
+if os.environ.get("POSTGRES_HOST", False):
     DB = PostgresEngine(
         config={
             "database": os.environ["POSTGRES_DB"],
