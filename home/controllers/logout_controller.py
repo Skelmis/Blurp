@@ -4,6 +4,7 @@ from piccolo_api.session_auth.tables import SessionsBase
 from piccolo_api.shared.auth.styles import Styles
 from starlette.status import HTTP_303_SEE_OTHER
 
+from home.middleware import EnsureAuth
 from home.util import get_csp
 
 
@@ -53,6 +54,9 @@ class LogoutController(Controller):
 
     @get(include_in_schema=False, name="signout")
     async def get(self, request: Request) -> Template:
+        request.scope["user"] = await EnsureAuth.get_user_from_connection(
+            request, fail_on_not_set=False
+        )
         return self._render_template(request)
 
     @post(tags=["Auth"])
