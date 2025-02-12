@@ -29,6 +29,9 @@ The following environment variables can be set to modify behaviour:
 
 ### Initial Setup
 
-- Deploy using Docker
-- Create a new superuser using `piccolo user create`
+- Make a copy of `docker-compose.yml`
+- Modify all the passwords and environment variables to your liking
+- Deploy it with `docker compose up -d`
+- Point your domains at the site
+- Create a new superuser using `piccolo user create` in the docker shell
   - Tick yes to all three provided options
