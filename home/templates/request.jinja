@@ -19,8 +19,7 @@
             <div class="card card-md">
                 <div class="card-body">
                             <b>Type:</b> {{ request_made.type }}<br>
-                            <b>URL:</b> {{ request_made.url }}{% if request_made.query_params %}?
-                            {{ request_made.query_params }}{% endif %}<br>
+                            <b>URL:</b> {{ request_made.url }}{% if request_made.query_params -%}?{{ request_made.query_params }}{% endif -%}<br>
                             <b>Request made at:</b><br>
                             <ul>
                                 <li>{{ made_at_time }}</li>

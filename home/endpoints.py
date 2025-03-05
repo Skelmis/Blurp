@@ -14,7 +14,7 @@ from home.tables import RequestMade
 from home.util import get_csp
 
 load_dotenv()
-HIDE_QUERY_PARAMS = os.environ.get("HIDE_QUERY_PARAMS", None) is not None
+HIDE_QUERY_PARAMS = commons.value_to_bool(os.environ.get("HIDE_QUERY_PARAMS"))
 HIDE_URLS: bool = commons.value_to_bool(os.environ.get("HIDE_URLS"))
 IGNORE_FROM_SELF: bool = commons.value_to_bool(os.environ.get("IGNORE_FROM_SELF"))
 
