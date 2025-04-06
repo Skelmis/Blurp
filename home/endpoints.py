@@ -62,8 +62,12 @@ async def catch_all(request: Request, full_path: str = "/") -> Template:
     )
     csp, nonce = get_csp()
     if not (IGNORE_FROM_SELF and request.user is not None):
+        headers_list: list[tuple[bytes, bytes]] = request.headers.to_header_list()
+        headers_dict = {
+            k.decode("latin-1"): v.decode("latin-1") for k, v in headers_list
+        }
         request_made: RequestMade = RequestMade(
-            headers=orjson.dumps(dict(request.headers)).decode("utf-8"),
+            headers=orjson.dumps(headers_dict).decode("utf-8"),
             body=(await request.body()).decode("utf-8"),
             url=full_path,
             query_params=request.url.query,
