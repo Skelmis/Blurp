@@ -39,10 +39,11 @@ async def admin(scope: "Scope", receive: "Receive", send: "Send") -> None:
         order_by=[OrderBy(RequestMade.id, ascending=False)],
         visible_columns=[
             RequestMade.id,
-            RequestMade.domain,
             RequestMade.type,
+            RequestMade.domain,
             RequestMade.url,
             RequestMade.query_params,
+            RequestMade.made_at,
         ],
     )
 
