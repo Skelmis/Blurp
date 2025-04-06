@@ -1,3 +1,3 @@
-poetry run piccolo migrations forwards user
-poetry run piccolo migrations forwards session_auth
-poetry run piccolo migrations forwards all
+uv run piccolo migrations forwards user
+uv run piccolo migrations forwards session_auth
+uv run piccolo migrations forwards all
