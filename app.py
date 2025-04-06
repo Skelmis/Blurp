@@ -37,6 +37,13 @@ async def admin(scope: "Scope", receive: "Receive", send: "Send") -> None:
         RequestMade,
         menu_group="Main",
         order_by=[OrderBy(RequestMade.id, ascending=False)],
+        visible_columns=[
+            RequestMade.id,
+            RequestMade.domain,
+            RequestMade.type,
+            RequestMade.url,
+            RequestMade.query_params,
+        ],
     )
 
     await create_admin(
