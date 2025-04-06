@@ -4,7 +4,6 @@ services:
   data_db:
     image: postgres:17
     container_name: "db.blurp.skelmis.co.nz"
-    restart: always
     command: -p 2301
     ports:
       - "127.0.0.1:2301:2301"
@@ -18,7 +17,6 @@ services:
   data_web:
     image: ghcr.io/skelmis/blurp:master
     container_name: "web_blurp.skelmis.co.nz"
-    restart: always
     ports:
       - "127.0.0.1:2300:2300"
     depends_on:
