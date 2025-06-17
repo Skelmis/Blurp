@@ -74,9 +74,9 @@ async def close_database_connection_pool():
 
 
 cors_config = CORSConfig(
-    allow_origins=[],
+    allow_origins=["*"],
     allow_headers=[],
-    allow_methods=[],
+    allow_methods=["*"],
     allow_credentials=False,
 )
 CSRF_TOKEN = os.environ.get("CSRF_TOKEN", secrets.token_hex(32))
@@ -136,6 +136,16 @@ app = Litestar(
     middleware=[rate_limit_config.middleware, session_config.middleware],
     plugins=[flash_plugin],
     response_headers=[
+        ResponseHeader(
+            name="Access-Control-Allow-Origin",
+            value="*",
+            description="For limited collaborator callouts",
+        ),
+        ResponseHeader(
+            name="Access-Control-Allow-Methods",
+            value="*",
+            description="For limited collaborator callouts",
+        ),
         ResponseHeader(
             name="x-frame-options",
             value="SAMEORIGIN",
